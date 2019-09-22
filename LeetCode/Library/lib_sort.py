@@ -55,23 +55,18 @@ def partition(arr, low, high):
 
 def quickSort(arr, low, high):
     # create a stack to mimic recursive strategy
-    size = high - low + 1
-    stack = [0] * size
-    top = -1
+    stack = []
 
     # push initial values
-    top += 1
-    stack[top] = low
-    top += 1
-    stack[top] = high
+    # push low first so that high stays higher
+    stack.append(low)
+    stack.append(high)
 
     # start quick sort algorithm
-    while (top >= 0):
+    while (stack != []):
         # pop low and high values
-        high = stack[top]
-        top -= 1
-        low = stack[top]
-        top -= 1
+        high = stack.pop()
+        low = stack.pop()
 
         # set pivot element at correct position in the sub-array
         pivot = partition(arr, low, high)
@@ -83,20 +78,16 @@ def quickSort(arr, low, high):
         # if left-partition is not empty, push it into stack
         if pivot - 1 > low:
             # push lower index in first
-            top += 1
-            stack[top] = low
+            stack.append(low)
             # so higher index is always higher
-            top += 1
-            stack[top] = pivot - 1
+            stack.append(pivot - 1)
 
         # if left-partition is not empty, push it into stack
         if high > pivot + 1:
             # push lower index in first
-            top += 1
-            stack[top] = pivot + 1
+            stack.append(pivot + 1)
             # so higher index is always higher
-            top += 1
-            stack[top] = high
+            stack.append(high)
 # END ALGORITHM
 ###############################################################################
 
