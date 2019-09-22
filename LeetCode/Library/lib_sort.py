@@ -15,6 +15,8 @@
 # OUTPUT:
 # index  0  1  2  3  4  5  6
 # arr = [3, 2, 5, 6, 8, 9, 0]
+from random import randint
+
 def partition(arr, low, high):
     # we find correct index for pivot element and split into two partitions:
     # -  left-partition contains elements whose value is smaller than or equal to
@@ -26,8 +28,12 @@ def partition(arr, low, high):
     # -  left-partition is empty
     # -  right-partition is at its max size
     pivot_index = low
-    # we assume pivot value be the last element in the array
-    # note: for different pivot value, please swap it with last element.
+    # we use random pivot element for optimal performance and then swap it
+    # to the last element. The reason is our partition algorithm only works
+    # with last element as the pivot value
+    i = randint(low, high)
+    arr[i], arr[high] = arr[high], arr[i]
+
     pivot_value = arr[high]
     # at this point, pivot value and pivot index are not synchronized
     # the loop below will find correct pivot index for pivot value
