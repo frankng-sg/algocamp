@@ -114,14 +114,15 @@ def binarySearch(target, arr, index, low, high):
         if arr[index[mid]] == target:
             return mid
 
-        if mid > low:
+        # if target < mid node then we travel to left tree
+        if target < arr[index[mid]] and mid > low:
             # push lower index in first
             stack.append(low)
             # so higher index is always higher
             stack.append(mid - 1)
 
-        # if left-partition is not empty, push it into stack
-        if high > mid:
+        # if target > mid node then we travel to right tree
+        elif target > arr[index[mid]] and high > mid:
             # push lower index in first
             stack.append(mid + 1)
             # so higher index is always higher
