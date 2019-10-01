@@ -1,19 +1,4 @@
 # PROBLEM:
-# Given an integer n, count number of unique BST's (binary search trees) that store values 1 ... n.
-# Input: 3
-# Output: 5
-
-
-def count_bst(min_val, max_val):
-    if min_val >= max_val:
-        return 1
-    no_of_trees = 0
-    for i in range(min_val, max_val + 1):
-        no_of_trees += count_bst(min_val, i - 1) * count_bst(i + 1, max_val)
-    return no_of_trees
-
-
-# PROBLEM:
 # Given an integer n, generate all structurally unique BST's (binary search trees) that store values 1 ... n.
 # Input: 3
 # Output:
@@ -52,10 +37,8 @@ class Solution:
 
             list_of_trees = []
             for val in range(min_val, max_val + 1):
-                left_tree = generate(min_val, val - 1)
-                right_tree = generate(val + 1, max_val)
-                for left_root in left_tree:
-                    for right_root in right_tree:
+                for left_root in generate(min_val, val - 1):
+                    for right_root in generate(val + 1, max_val):
                         root = TreeNode(val)
                         root.left = left_root
                         root.right = right_root
@@ -64,5 +47,4 @@ class Solution:
 
         if n is 0:
             return []
-        else:
-            return generate(1, n)
+        return generate(1, n)
