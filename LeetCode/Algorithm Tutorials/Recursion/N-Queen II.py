@@ -28,25 +28,18 @@ class Solution:
         self.occupied_right_diagonal = [False] * 2 * MAX_N
         self.no_of_solutions = 0
 
-    def recur_search(self, size: int, placed_col: int):
-        if placed_col < 0:
+    def recur_search(self, size: int, col: int, occupied_row, occupied_xy_sum, occupied_xy_sub):
+        if col < 0:
             self.no_of_solutions += 1
             return
 
         for row in range(size):
-            if not self.occupied_row[row] and not self.occupied_left_diagonal[row + placed_col] \
-                    and not self.occupied_right_diagonal[size + row - placed_col]:
-
-                self.occupied_row[row] = True
-                self.occupied_left_diagonal[row + placed_col] = True
-                self.occupied_right_diagonal[size + row - placed_col] = True
-                self.recur_search(size, placed_col - 1)
-                self.occupied_row[row] = False
-                self.occupied_left_diagonal[row + placed_col] = False
-                self.occupied_right_diagonal[size + row - placed_col] = False
+            if row not in occupied_row and row + col not in occupied_xy_sum and row - col not in occupied_xy_sub:
+                self.recur_search(size, col - 1, occupied_row + [row], occupied_xy_sum + [row + col],
+                                  occupied_xy_sub + [row - col])
 
     def totalNQueens(self, n: int) -> int:
-        self.recur_search(n, n - 1)
+        self.recur_search(n, n - 1, [], [], [])
         return self.no_of_solutions
 
 
