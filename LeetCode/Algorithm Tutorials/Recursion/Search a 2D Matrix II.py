@@ -1,23 +1,20 @@
 class Solution:
+    @staticmethod
+    def recur_search(matrix, target, search_row, search_col):
+        if search_col < 0 or search_row >= len(matrix):
+            return False
+
+        if matrix[search_row][search_col] == target:
+            return True
+        if matrix[search_row][search_col] > target:
+            return Solution.recur_search(matrix, target, search_row, search_col - 1)
+        return Solution.recur_search(matrix, target, search_row + 1, search_col)
 
     def searchMatrix(self, matrix, target):
         if not matrix:
             return False
 
-        max_row = len(matrix) - 1
-        max_col = len(matrix[0]) - 1
-        search_row = 0
-        search_col = max_col
-
-        while search_row <= max_row and search_col >= 0:
-            if matrix[search_row][search_col] is target:
-                return True
-            if matrix[search_row][search_col] > target:
-                search_col -= 1
-            else:
-                search_row += 1
-
-        return False
+        return Solution.recur_search(matrix, target, 0, len(matrix[0]) - 1)
 
 
 func = Solution()
