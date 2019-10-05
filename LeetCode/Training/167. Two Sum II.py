@@ -6,7 +6,7 @@ def binarySearch(target, arr, low, high):
     stack.append(low)
     stack.append(high)
 
-    while stack != []: # while stack is not empty
+    while stack:  # while stack is not empty
         high = stack.pop()
         low = stack.pop()
         mid = int((low + high) / 2)
