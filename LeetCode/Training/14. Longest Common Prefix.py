@@ -1,6 +1,6 @@
 class Solution:
     def longestCommonPrefix(self, strPrefix):
-        if strPrefix == []:
+        if not strPrefix:
             return ""
             
         strCommon = strPrefix[0]
