@@ -10,31 +10,24 @@
 
 class Solution:
     def equalSubstring(self, s: str, t: str, maxCost: int) -> int:
-        i = 0
-        j = 0
+        string_length = len(s)
+        diff = [abs(ord(s[i]) - ord(t[i])) for i in range(string_length)]
+
+        max_substring_length = 0
         spent = 0
-        string_size = len(s)
-        max_substring_size = 0
-        while i < string_size and j < string_size:
-            while j < string_size:
-                cost = abs(ord(s[j]) - ord(t[j]))
-                if spent + cost <= maxCost:
-                    spent += cost
-                    j += 1
-                else:
-                    break
+        left = 0
+        for right in range(string_length):
+            spent += diff[right]
+            while spent > maxCost:
+                spent -= diff[left]
+                left += 1
+            max_substring_length = max(max_substring_length, right - left + 1)
 
-            if max_substring_size < j - i:
-                max_substring_size = j - i
-
-            spent -= abs(ord(s[i]) - ord(t[i]))
-            i += 1
-
-        return max_substring_size
+        return max_substring_length
 
 
-func = Solution()
-
+# func = Solution()
+#
 # s = 'abcd'
 # t = 'bcdf'
 # maxCost = 3
