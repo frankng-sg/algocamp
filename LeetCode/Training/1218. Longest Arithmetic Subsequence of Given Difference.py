@@ -19,18 +19,16 @@
 
 class Solution:
     def longestSubsequence(self, arr, difference):
-        lookup = {}
-        longest = 1
-        for i in range(0, len(arr)):
-            if arr[i] - difference not in lookup:
-                lookup[arr[i]] = 1
+        count = {}
+        for num in arr:
+            if num - difference in count:
+                count[num] = count[num - difference] + 1
             else:
-                lookup[arr[i]] = lookup[arr[i] - difference] + 1
-                longest = max(lookup[arr[i]], longest)
-        return longest
+                count[num] = 1
+        return max(count.values())
 
 
-func = Solution()
-arr = [1, 5, 7, 8, 5, 3, 4, 2, 1]
-difference = -2
-print(func.longestSubsequence(arr, difference)) # Output: 4
+# func = Solution()
+# arr = [1, 5, 7, 8, 5, 3, 4, 2, 1]
+# difference = -2
+# print(func.longestSubsequence(arr, difference))  # Output: 4
