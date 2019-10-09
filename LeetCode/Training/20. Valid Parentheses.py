@@ -22,16 +22,19 @@
 class Solution:
     def isValid(self, s: str) -> bool:
         stack = []
-        lookup = {'(': 1, '[': 2, '{': 3, ')': -1, ']': -2, '}': -3}
-        for bracket in s:
-            if bracket in '([{':
-                stack.append(bracket)
+        mappings = {
+            ')': '(',
+            ']': '[',
+            '}': '{'
+        }
+        for ch in s:
+            if ch in '([{':
+                stack.append(ch)
             else:
-                if not stack:
+                if not stack or stack[-1] != mappings[ch]:
                     return False
-                open_bracket = stack.pop()
-                if lookup[open_bracket] + lookup[bracket] != 0:
-                    return False
+                else:
+                    stack.pop()
 
         return not stack
 
