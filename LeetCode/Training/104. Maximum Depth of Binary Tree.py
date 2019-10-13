@@ -28,6 +28,3 @@ class Solution:
             return 0
         stack = [[root, 1]]
         return search(stack, 1)
-
-
-        
