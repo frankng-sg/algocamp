@@ -1,23 +1,34 @@
 class Solution:
     def generateParenthesis(self, n: int):
-        output = []
-        sequence = []
+        queue = []
         open_char = '('
         close_char = ')'
+        queue.append([open_char])
+        for chars in range(1, 2 * n):
+            for i in range(0, len(queue)):
+                open_chars = queue[i].count(open_char)
+                close_chars = queue[i].count(close_char)
+                if not close_chars:
+                    close_chars = 0
+                unclosed = open_chars - close_chars
 
-        def recur_search(remained_char, remained_open_char, unclosed_chars):
-            if remained_char == 0:
-                output.append(''.join(sequence))
-                return
-            if remained_open_char > 0:
-                sequence.append(open_char)
-                recur_search(remained_char - 1, remained_open_char - 1, unclosed_chars + 1)
-                sequence.pop()
+                was_extended = False
+                new = queue[i].copy()
+                if open_chars < n:
+                    queue[i].extend([open_char])
+                    was_extended = True
 
-            if unclosed_chars > 0:
-                sequence.append(close_char)
-                recur_search(remained_char - 1, remained_open_char, unclosed_chars - 1)
-                sequence.pop()
+                if unclosed > 0:
+                    if was_extended:
+                        new.extend([close_char])
+                        queue.append(new)
+                    else:
+                        queue[i].extend([close_char])
 
-        recur_search(2 * n, n, 0)
-        return output
+        for i in range(0, len(queue)):
+            queue[i] = ''.join(queue[i])
+
+        return queue
+
+func = Solution()
+print(func.generateParenthesis(3))
