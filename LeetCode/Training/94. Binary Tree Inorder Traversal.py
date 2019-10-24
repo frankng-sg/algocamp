@@ -8,14 +8,21 @@ class TreeNode:
 
 class Solution:
     def inorderTraversal(self, root):
+        if root is None:
+            return []
+
+        tree = [root]
         sequence = []
+        while tree:
+            if tree[-1].left:
+                node = tree[-1].left
+                tree[-1].left = None
+                tree.append(node)
+            else:
+                node = tree[-1]
+                sequence.append(node.val)
+                tree.pop()
+                if node.right:
+                    tree.append(node.right)
 
-        def inorder(root):
-            if root is None:
-                return
-            inorder(root.left)
-            sequence.append(root.val)
-            inorder(root.right)
-
-        inorder(root)
         return sequence
