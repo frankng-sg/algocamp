@@ -1,3 +1,9 @@
+# Given a string of all lowercase letter.
+# Sort the string in alphabet order
+# Example:
+# Input: cdea 
+# Output: acde
+
 def sort(sequence):
     list_char = list(sequence)
     length = len(list_char)
