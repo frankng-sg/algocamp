@@ -1,18 +1,13 @@
 class Solution:
-    def isPalindrome(self, s: str):
-        str_len = len(s)
-        for index in range(0, str_len // 2):
-            if s[index] != s[str_len - 1 - index]:
-                return False, index, str_len - 1 - index
-        return True, 0, 0
-
     def validPalindrome(self, s: str) -> bool:
-        palindrome, left, right = self.isPalindrome(s)
-        if not palindrome:
-            palindrome, unused, unused = self.isPalindrome(s[left + 1: right + 1])
-            if not palindrome:
-                palindrome, unused, unused = self.isPalindrome(s[left: right])
-                return palindrome
+        left, right = 0, len(s) - 1
+        while left < right:
+            if s[left] == s[right]:
+                left, right = left + 1, right - 1
+            else:
+                case1 = s[left: right]
+                case2 = s[left + 1: right + 1]
+                return case1 == case1[::-1] or case2 == case2[::-1]
         return True
 
 
