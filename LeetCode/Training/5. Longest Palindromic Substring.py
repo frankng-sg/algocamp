@@ -9,39 +9,33 @@ def longestPalindrome(s: str) -> str:
             return True
     
         if isPalindrome(start_pos + 1, end_pos - 1) and s[start_pos] == s[end_pos]:
-            palindrome[start_pos, end_pos] = True
+            palindrome[(start_pos, end_pos)] = True
             return True
 
         return False
 
-    for i in range(len(s)):
-        palindrome[(i, i)] = True
-
     max_len = 1
     max_start = 0
     max_end = 0
-    len_s = len(s)
+    prev = [i for i in range(len(s))]
 
-    for i in range(1, len_s):
-        for offset in range(2):            
-            end_pos = i
-            start_pos = i - offset
-            while isPalindrome(start_pos, end_pos):
-                start_pos -= 1
-                end_pos += 1
-                if start_pos < 0 or end_pos >= len_s:
+    for i in range(1, len(s)):
+        if prev[i - 1] - 1 >= 0 and s[i] == s[prev[i - 1] - 1]:
+            prev[i] = prev[i - 1] - 1
+        else:
+            for new_prev in range(prev[i - 1], i):
+                if isPalindrome(new_prev, i):
+                    prev[i] = new_prev
                     break
-            start_pos += 1
-            end_pos -= 1
 
-            if end_pos - start_pos + 1 > max_len:
-                max_len = end_pos - start_pos + 1
-                max_start = start_pos
-                max_end = end_pos
-    
+        if i - prev[i] + 1 > max_len:
+            max_len = i - prev[i] + 1
+            max_start = prev[i]
+            max_end = i
+
     return s[max_start:max_end + 1]
 
-
+print(longestPalindrome('aaa'))
 print(longestPalindrome('aa'))
 print(longestPalindrome('ababababababababa'))
 print(longestPalindrome('bananas'))
