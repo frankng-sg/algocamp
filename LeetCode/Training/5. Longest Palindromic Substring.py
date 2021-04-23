@@ -1,44 +1,55 @@
 def longestPalindrome(s: str) -> str:
-    palindrome = {}
+    X = s
+    Y = X[::-1]
 
-    def isPalindrome(start_pos, end_pos):
-        if start_pos >= end_pos:
-            return True
+    n = len(X)
 
-        if (start_pos, end_pos) in palindrome:
-            return True
-    
-        if isPalindrome(start_pos + 1, end_pos - 1) and s[start_pos] == s[end_pos]:
-            palindrome[(start_pos, end_pos)] = True
-            return True
-
-        return False
-
-    max_len = 1
+    # lcs is the table with zero
+    # value initially in each cell
+    lcs = [[0 for k in range(n+1)] for l in range(n+1)]
+    x_prev = [[-1 for k in range(n+1)] for l in range(n+1)]
+    y_prev = [[-1 for k in range(n+1)] for l in range(n+1)]
+ 
+    # To store the length of
+    # longest common substring
+    max_len = 0
     max_start = 0
     max_end = 0
-    prev = [i for i in range(len(s))]
+ 
+    # Following steps to build
+    # lcs[m+1][n+1] in bottom up fashion
+    for i in range(n + 1):
+        for j in range(n + 1):
+            if (i == 0 or j == 0):
+                continue
 
-    for i in range(1, len(s)):
-        if prev[i - 1] - 1 >= 0 and s[i] == s[prev[i - 1] - 1]:
-            prev[i] = prev[i - 1] - 1
-        else:
-            for new_prev in range(prev[i - 1], i):
-                if isPalindrome(new_prev, i):
-                    prev[i] = new_prev
-                    break
+            if (X[i-1] == Y[j-1]):
+                if x_prev[i-1][j-1] == -1:
+                    x_prev[i-1][j-1] = i-1
+                x_prev[i][j] = x_prev[i-1][j-1]
 
-        if i - prev[i] + 1 > max_len:
-            max_len = i - prev[i] + 1
-            max_start = prev[i]
-            max_end = i
+                if y_prev[i-1][j-1] == -1:
+                    y_prev[i-1][j-1] = j-1
+                y_prev[i][j] = y_prev[i-1][j-1]
 
-    return s[max_start:max_end + 1]
 
-print(longestPalindrome('aaa'))
-print(longestPalindrome('aa'))
+                lcs[i][j] = lcs[i-1][j-1] + 1
+                if max_len < lcs[i][j] and n - i == y_prev[i-1][j-1] and n - j == x_prev[i-1][j-1]:
+                    max_len = lcs[i][j]
+                    max_start = x_prev[i-1][j-1]
+                    max_end = i-1
+                        
+    if max_len == 0:
+        return ''
+    else:
+        return X[max_start:max_end+1]
+
+
+print(longestPalindrome('aacabdkacaa'))
 print(longestPalindrome('ababababababababa'))
 print(longestPalindrome('bananas'))
+print(longestPalindrome('aaa'))
 print(longestPalindrome('1234567890987654321'))
 print(longestPalindrome("civilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth"))
 print(longestPalindrome("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+print(longestPalindrome("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"))
