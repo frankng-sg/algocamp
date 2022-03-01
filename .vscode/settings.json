@@ -1,3 +1,5 @@
 {
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "gitblame.ignoreWhitespace": true,
+  "gitblame.statusBarMessageDisplayRight": true
 }

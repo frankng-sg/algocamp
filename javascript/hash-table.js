@@ -30,6 +30,19 @@ class HashTable {
     }
     return undefined;
   }
+
+  keys() {
+    const keysArray = [];
+    for (let i = 0; i < this.data.length; i++) {
+      const currentBucket = this.data[i];
+      if (currentBucket) {
+        for (let j = 0; j < currentBucket.length; j++) {
+          keysArray.push(currentBucket[j][0]);
+        }
+      }
+    }
+    return keysArray;
+  }
 }
 
 const myHashTable = new HashTable(2);
@@ -37,3 +50,4 @@ myHashTable.set("grape0", 1);
 myHashTable.set("grape1", 2);
 myHashTable.set("grape2", 3);
 console.log(myHashTable.get("grape20"));
+console.log(myHashTable.keys());
