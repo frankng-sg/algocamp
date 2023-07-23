@@ -48,11 +48,33 @@ class Set {
 
         return newSet;
     }
+    // This is our intersection method
     intersection(set) {
-        let common = new Set();
-        this.values().forEach((key) => {
-            if (set.has(key)) common.add(key);
+        const newSet = new Set();
+
+        let largeSet;
+        let smallSet;
+        if (this.dictionary.length > set.length) {
+            largeSet = this;
+            smallSet = set;
+        } else {
+            largeSet = set;
+            smallSet = this;
+        }
+
+        smallSet.values().forEach((value) => {
+            if (largeSet.dictionary[value]) {
+                newSet.add(value);
+            }
         });
-        return common;
+
+        return newSet;
+    }
+    difference(set) {
+        const newSet = new Set();
+        this.values().forEach((key) => {
+            if (!set.has(key)) newSet.add(key);
+        });
+        return newSet;
     }
 }
