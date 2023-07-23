@@ -70,11 +70,19 @@ class Set {
 
         return newSet;
     }
+
     difference(set) {
         const newSet = new Set();
-        this.values().forEach((key) => {
-            if (!set.has(key)) newSet.add(key);
+
+        this.values().forEach((value) => {
+            if (!set.dictionary[value]) {
+                newSet.add(value);
+            }
         });
+
         return newSet;
+    }
+    isSubsetOf(set) {
+        return this.difference(set).length == 0;
     }
 }
