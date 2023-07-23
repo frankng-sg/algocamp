@@ -1,39 +1,51 @@
 class Set {
     constructor() {
-        // Dictionary will hold the items of our set
+        // This will hold the set
         this.dictionary = {};
         this.length = 0;
     }
-
     // This method will check for the presence of an element and return true or false
     has(element) {
         return this.dictionary[element] !== undefined;
     }
-
     // This method will return all the values in the set
     values() {
-        return Object.values(this.dictionary);
+        return Object.keys(this.dictionary);
     }
+    // This method will add an element to the set
+    add(element) {
+        if (!this.has(element)) {
+            this.dictionary[element] = true;
+            this.length++;
+            return true;
+        }
 
-    // Only change code below this line
-    add(item) {
-        if (this.has(item)) return false;
-        this.dictionary[item] = item;
-        return true;
+        return false;
     }
-    remove(item) {
-        if (!this.has(item)) return false;
-        delete this.dictionary[item];
-        return true;
+    // This method will remove an element from a set
+    remove(element) {
+        if (this.has(element)) {
+            delete this.dictionary[element];
+            this.length--;
+            return true;
+        }
+
+        return false;
     }
+    // This method will return the size of the set
     size() {
-        return Object.values(this.dictionary).length;
+        return this.length;
     }
-    // Only change code above this line
-}
+    // This is our union method
+    union(set) {
+        const newSet = new Set();
+        this.values().forEach((value) => {
+            newSet.add(value);
+        });
+        set.values().forEach((value) => {
+            newSet.add(value);
+        });
 
-const s = new Set();
-console.log(s.add(1));
-console.log(s.values());
-console.log(s.add(1));
-console.log(s.values());
+        return newSet;
+    }
+}
