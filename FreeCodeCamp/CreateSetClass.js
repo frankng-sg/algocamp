@@ -48,4 +48,11 @@ class Set {
 
         return newSet;
     }
+    intersection(set) {
+        let common = new Set();
+        this.values().forEach((key) => {
+            if (set.has(key)) common.add(key);
+        });
+        return common;
+    }
 }
