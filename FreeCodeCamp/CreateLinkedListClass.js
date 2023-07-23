@@ -1,8 +1,8 @@
 function LinkedList() {
-    var length = 0;
-    var head = null;
+    let length = 0;
+    let head = null;
 
-    var Node = function (element) {
+    let Node = function (element) {
         this.element = element;
         this.next = null;
     };
@@ -16,11 +16,11 @@ function LinkedList() {
     };
 
     this.add = function (element) {
-        var node = new Node(element);
+        let node = new Node(element);
         if (head === null) {
             head = node;
         } else {
-            var currentNode = head;
+            let currentNode = head;
 
             while (currentNode.next) {
                 currentNode = currentNode.next;
@@ -89,10 +89,23 @@ function LinkedList() {
         length--;
         return val;
     };
+    this.addAt = function (idx, element) {
+        if (idx < 0 || idx >= length) return false;
+        let newNode = new Node(element);
+        if (idx == 0) {
+            newNode.next = head;
+            head = newNode;
+        } else {
+            let prev = head;
+            let curr = head;
+            while (idx-- > 0) {
+                prev = curr;
+                curr = curr.next;
+            }
+            prev.next = newNode;
+            newNode.next = curr;
+        }
+        length++;
+        return true;
+    };
 }
-
-let ll = new LinkedList();
-ll.add(1);
-ll.add(2);
-console.log(ll.indexOf(0));
-console.log(ll.elementAt(0));
