@@ -51,11 +51,29 @@ function LinkedList() {
             curr = curr.next;
         }
     };
+    this.isEmpty = function () {
+        return length <= 0;
+    };
+    this.indexOf = function (element) {
+        let idx = 0;
+        let curr = head;
+        while (curr && curr.element != element) {
+            idx++;
+            curr = curr.next;
+        }
+        if (!curr) return -1;
+        return idx;
+    };
+    this.elementAt = function (idx) {
+        if (idx >= length) return undefined;
+        let curr = head;
+        while (curr && idx-- > 0) curr = curr.next;
+        return curr.element;
+    };
 }
 
 let ll = new LinkedList();
 ll.add(1);
-console.log(ll.size());
-ll.remove(1);
-ll.remove(2);
-console.log(ll.size());
+ll.add(2);
+console.log(ll.indexOf(0));
+console.log(ll.elementAt(0));
