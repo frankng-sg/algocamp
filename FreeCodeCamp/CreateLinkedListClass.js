@@ -65,10 +65,29 @@ function LinkedList() {
         return idx;
     };
     this.elementAt = function (idx) {
-        if (idx >= length) return undefined;
+        if (idx < 0 || idx >= length) return undefined;
         let curr = head;
         while (curr && idx-- > 0) curr = curr.next;
         return curr.element;
+    };
+    this.removeAt = function (idx) {
+        if (idx < 0 || idx >= length) return null;
+        let val;
+        if (idx === 0) {
+            val = head.element;
+            head = head.next;
+        } else {
+            let prev = head;
+            let curr = head;
+            while (curr && idx-- > 0) {
+                prev = curr;
+                curr = curr.next;
+            }
+            prev.next = curr.next;
+            val = curr.element;
+        }
+        length--;
+        return val;
     };
 }
 
