@@ -11,8 +11,7 @@ func maxDepth(root *Node) int {
 	}
 	max := 0
 	for _, v := range root.Children {
-		depth := maxDepth(v)
-		if max < depth {
+		if depth := maxDepth(v); max < depth {
 			max = depth
 		}
 	}
