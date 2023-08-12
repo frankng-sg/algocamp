@@ -9,24 +9,28 @@ func lowerInt(a, b int) int {
 	return b
 }
 
+func higherInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 func trap(height []int) int {
 	n := len(height)
+	mLeft := make([]int, n)
+	mRight := make([]int, n)
+	for i := 1; i < n; i++ {
+		mLeft[i] = higherInt(mLeft[i-1], height[i-1])
+	}
+	for i := n - 2; i >= 0; i-- {
+		mRight[i] = higherInt(mRight[i+1], height[i+1])
+	}
 	sum := 0
-	for i := 0; i < n-1; {
-		m := i + 1
-		for j := i + 1; j < n; j++ {
-			if height[j] > height[m] {
-				m = j
-			}
-			if height[j] >= height[i] {
-				break
-			}
+	for i := 1; i < n-1; i++ {
+		if height[i] < mLeft[i] && height[i] < mRight[i] {
+			sum += lowerInt(mLeft[i], mRight[i]) - height[i]
 		}
-		lim := lowerInt(height[i], height[m])
-		for j := i + 1; j < m; j++ {
-			sum += lim - height[j]
-		}
-		i = m
 	}
 	return sum
 }
