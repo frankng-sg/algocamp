@@ -2,36 +2,30 @@ package main
 
 import "fmt"
 
-func lowerInt(a, b int) int {
-	if a < b {
-		return a
+func higherInt(x, y int) int {
+	if x > y {
+		return x
 	}
-	return b
-}
-
-func higherInt(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+	return y
 }
 
 func trap(height []int) int {
-	n := len(height)
-	mLeft := make([]int, n)
-	mRight := make([]int, n)
-	for i := 1; i < n; i++ {
-		mLeft[i] = higherInt(mLeft[i-1], height[i-1])
-	}
-	for i := n - 2; i >= 0; i-- {
-		mRight[i] = higherInt(mRight[i+1], height[i+1])
-	}
 	sum := 0
-	for i := 1; i < n-1; i++ {
-		if height[i] < mLeft[i] && height[i] < mRight[i] {
-			sum += lowerInt(mLeft[i], mRight[i]) - height[i]
+	n := len(height)
+	lMax := height[0]
+	rMax := height[n-1]
+	for l, r := 0, n-1; l < r; {
+		if lMax < rMax {
+			l++
+			lMax = higherInt(lMax, height[l])
+			sum += lMax - height[l]
+		} else {
+			r--
+			rMax = higherInt(rMax, height[r])
+			sum += rMax - height[r]
 		}
 	}
+
 	return sum
 }
 
