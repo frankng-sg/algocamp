@@ -2,40 +2,20 @@ package main
 
 import "fmt"
 
-func isAnagram(s string, t string) bool {
-	if len(s) != len(t) {
-		return false
-	}
-	var count [26]int
-	l := len(s)
-	for i := 0; i < l; i++ {
-		count[s[i]-'a']++
-		count[t[i]-'a']--
-	}
-	for i := 0; i < 26; i++ {
-		if count[i] != 0 {
-			return false
-		}
-	}
-	return true
-}
-
 func groupAnagrams(strs []string) [][]string {
-	used := make(map[int]bool)
-	l := len(strs)
-	var result [][]string
-	for i := 0; i < l; i++ {
-		if _, ok := used[i]; !ok {
-			used[i] = true
-			group := []string{strs[i]}
-			for j := i + 1; j < l; j++ {
-				if _, ok := used[j]; !ok && isAnagram(strs[i], strs[j]) {
-					used[j] = true
-					group = append(group, strs[j])
-				}
-			}
-			result = append(result, group)
+	m := make(map[[26]int][]string)
+	for _, s := range strs {
+		var count [26]int
+		for _, ch := range s {
+			count[ch-'a']++
 		}
+		m[count] = append(m[count], s)
+	}
+	result := make([][]string, len(m))
+	i := 0
+	for _, r := range m {
+		result[i] = r
+		i++
 	}
 	return result
 }
