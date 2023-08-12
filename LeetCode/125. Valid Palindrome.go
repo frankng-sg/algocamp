@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func isAlphanumeric(c byte) bool {
+func isAlphanumeric(c rune) bool {
 	return (c >= 'a' && c <= 'z') ||
 		(c >= 'A' && c <= 'Z') ||
 		(c >= '0' && c <= '9')
@@ -13,26 +13,20 @@ func isAlphanumeric(c byte) bool {
 
 func isPalindrome(s string) bool {
 	s = strings.ToLower(s)
-	l, r := 0, len(s)-1
-	result := true
-	for {
-		for l < r && !isAlphanumeric(s[l]) {
-			l++
+	var ns []rune
+	for _, v := range s {
+		if isAlphanumeric(v) {
+			ns = append(ns, v)
 		}
-		for l < r && !isAlphanumeric(s[r]) {
-			r--
-		}
-		if l >= r {
-			break
-		}
-		if s[l] != s[r] {
-			result = false
-			break
-		}
-		l++
-		r--
 	}
-	return result
+	for i, j := 0, len(ns)-1; i < j; {
+		if ns[i] != ns[j] {
+			return false
+		}
+		i++
+		j--
+	}
+	return true
 }
 
 func main() {
