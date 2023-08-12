@@ -3,25 +3,21 @@ package main
 import "fmt"
 
 func isAnagram(s string, t string) bool {
-	count := make(map[byte]int)
-	slen, tlen := len(s), len(t)
-	for i := 0; i < slen; i++ {
-		if _, ok := count[s[i]]; ok {
-			count[s[i]]++
-		} else {
-			count[s[i]] = 1
-		}
+	if len(s) != len(t) {
+		return false
 	}
-	for i := 0; i < tlen; i++ {
-		if _, ok := count[t[i]]; !ok {
+	var count [26]int
+	l := len(s)
+	for i := 0; i < l; i++ {
+		count[s[i]-'a']++
+		count[t[i]-'a']--
+	}
+	for i := 0; i < 26; i++ {
+		if count[i] != 0 {
 			return false
 		}
-		count[t[i]]--
-		if count[t[i]] == 0 {
-			delete(count, t[i])
-		}
 	}
-	return len(count) == 0
+	return true
 }
 
 func main() {
