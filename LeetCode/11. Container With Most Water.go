@@ -12,20 +12,19 @@ func lowerInt(a, b int) int {
 }
 
 func maxArea(height []int) int {
-	left := 0
-	right := len(height) - 1
-	mArea := 0
+	left, right := 0, len(height)-1
+	mArea, width := 0, right-left
 	for left < right {
-		lower := lowerInt(height[left], height[right])
-		area := lower * (right - left)
+		area := lowerInt(height[left], height[right]) * width
 		if area > mArea {
 			mArea = area
 		}
-		if lower == height[left] {
+		if height[left] <= height[right] {
 			left++
 		} else {
 			right--
 		}
+		width--
 	}
 	return mArea
 }
