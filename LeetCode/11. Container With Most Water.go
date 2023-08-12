@@ -1,37 +1,37 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-func lower(a, b int) int {
-	if a > b {
-		return b
+func lowerInt(a, b int) int {
+	if a < b {
+		return a
 	}
-	return a
+	return b
 }
 
 func maxArea(height []int) int {
-	n := len(height)
-	mLeft := 0
+	left := 0
+	right := len(height) - 1
 	mArea := 0
-	for i := 0; i < n; i++ {
-		if height[i] > mLeft {
-			mLeft = height[i]
-			mRight := 0
-			for j := n - 1; j > i; j-- {
-				if height[j] > mRight {
-					mRight = height[j]
-					area := lower(mLeft, mRight) * (j - i)
-					if area > mArea {
-						mArea = area
-					}
-				}
-			}
+	for left < right {
+		lower := lowerInt(height[left], height[right])
+		area := lower * (right - left)
+		if area > mArea {
+			mArea = area
+		}
+		if lower == height[left] {
+			left++
+		} else {
+			right--
 		}
 	}
 	return mArea
 }
 
 func main() {
-	fmt.Println(maxArea([]int{1, 8, 6, 2, 5, 4, 8, 3, 7})) // Output: 49
-	fmt.Println(maxArea([]int{1, 1}))                      // Output: 1
+	fmt.Println(maxArea([]int{1, 8, 6, 2, 5, 4, 8, 3, 7}))  // Output: 49
+	fmt.Println(maxArea([]int{1, 1}))                       // Output: 1
+	fmt.Println(maxArea([]int{1, 1, 1, 100, 101, 1, 1, 1})) // Output: 100
 }
