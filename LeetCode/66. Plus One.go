@@ -3,25 +3,17 @@ package main
 import "fmt"
 
 func plusOne(digits []int) []int {
-	n := len(digits)
-	result := make([]int, n+1)
-	c := 1
-	for i := n - 1; i >= 0; i-- {
-		sum := c + digits[i]
-		if sum >= 10 {
-			result[i+1] = sum - 10
-			c = 1
-		} else {
-			result[i+1] = sum
-			c = 0
-		}
+	i := len(digits) - 1
+	for i >= 0 && digits[i] == 9 {
+		digits[i] = 0
+		i--
 	}
-	result[0] = c
-	if c > 0 {
-		return result
+	if i >= 0 {
+		digits[i]++
 	} else {
-		return result[1:]
+		digits = append([]int{1}, digits...)
 	}
+	return digits
 }
 
 func main() {
