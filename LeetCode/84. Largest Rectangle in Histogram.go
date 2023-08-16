@@ -2,20 +2,6 @@ package main
 
 import "fmt"
 
-type Stack []int
-
-func (s *Stack) Top() int {
-	return (*s)[len(*s)-1]
-}
-
-func (s *Stack) Pop() {
-	*s = (*s)[:len(*s)-1]
-}
-
-func (s *Stack) Push(v int) {
-	*s = append(*s, v)
-}
-
 func max(a, b int) int {
 	if a > b {
 		return a
@@ -25,19 +11,20 @@ func max(a, b int) int {
 
 func largestRectangleArea(heights []int) int {
 	n := len(heights)
-	var h, p Stack
+	h, p := []int{0}, []int{0}
 	maxArea := 0
 	for i := 0; i < n; i++ {
 		start := i
-		for len(h) > 0 && h.Top() > heights[i] {
-			maxArea = max(maxArea, h.Top()*(i-p.Top()))
-			start = p.Top()
-			h.Pop()
-			p.Pop()
+		j := len(h) - 1
+		for ; j >= 0 && h[j] > heights[i]; j-- {
+			maxArea = max(maxArea, h[j]*(i-p[j]))
+			start = p[j]
 		}
-		if len(h) == 0 || heights[i] > h.Top() {
-			h.Push(heights[i])
-			p.Push(start)
+		h = h[:j+1]
+		p = p[:j+1]
+		if heights[i] > h[j] {
+			h = append(h, heights[i])
+			p = append(p, start)
 		}
 	}
 	for i := 0; i < len(h); i++ {
