@@ -4,6 +4,23 @@ import (
 	"fmt"
 )
 
+func dailyTemperatures2(temperatures []int) []int {
+	ans := make([]int, len(temperatures))
+	stack := []int{}
+	top := -1
+	for i, t := range temperatures {
+		for top >= 0 && temperatures[stack[top]] < t {
+			loc := stack[top]
+			ans[loc] = i - loc
+			stack = stack[:top]
+			top--
+		}
+		stack = append(stack, i)
+		top++
+	}
+	return ans
+}
+
 func dailyTemperatures(temperatures []int) []int {
 	n := len(temperatures)
 	next := make([]int, n)
