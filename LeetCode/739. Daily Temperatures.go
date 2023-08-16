@@ -23,27 +23,18 @@ func dailyTemperatures2(temperatures []int) []int {
 
 func dailyTemperatures(temperatures []int) []int {
 	n := len(temperatures)
-	next := make([]int, n)
-	next[n-1] = -1
+	count := make([]int, n)
+	count[n-1] = 0
 	for i := n - 2; i >= 0; i-- {
 		j := i + 1
-		for next[j] != -1 && temperatures[i] >= temperatures[j] {
-			j = next[j]
+		for count[j] != 0 && temperatures[i] >= temperatures[j] {
+			j += count[j]
 		}
 		if temperatures[i] < temperatures[j] {
-			next[i] = j
-		} else {
-			next[i] = -1
+			count[i] = j - i
 		}
 	}
-	for i := 0; i < n; i++ {
-		if next[i] == -1 {
-			next[i] = 0
-		} else {
-			next[i] = next[i] - i
-		}
-	}
-	return next
+	return count
 }
 
 func main() {
