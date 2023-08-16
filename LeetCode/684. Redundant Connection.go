@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func findRedundantConnection(edges [][]int) []int {
-	parent := make(map[int]int)
+	parent := make([]int, len(edges)+1)
 	root := func(node int) int {
 		for parent[node] != node {
 			node = parent[node]
