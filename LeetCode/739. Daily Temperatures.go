@@ -2,34 +2,31 @@ package main
 
 import (
 	"fmt"
-	"sort"
 )
 
 func dailyTemperatures(temperatures []int) []int {
 	n := len(temperatures)
-	pos := make(map[int][]int)
-	for i, v := range temperatures {
-		pos[v] = append(pos[v], i)
+	next := make([]int, n)
+	next[n-1] = -1
+	for i := n - 2; i >= 0; i-- {
+		j := i + 1
+		for next[j] != -1 && temperatures[i] >= temperatures[j] {
+			j = next[j]
+		}
+		if temperatures[i] < temperatures[j] {
+			next[i] = j
+		} else {
+			next[i] = -1
+		}
 	}
-	for t := 30; t <= 100; t++ {
-		sort.Ints(pos[t])
-	}
-	ans := make([]int, n)
 	for i := 0; i < n; i++ {
-		min := n
-		for t := temperatures[i] + 1; t <= 100; t++ {
-			for _, loc := range pos[t] {
-				if loc > i && loc-i < min {
-					min = loc - i
-				}
-			}
-
-		}
-		if min < n {
-			ans[i] = min
+		if next[i] == -1 {
+			next[i] = 0
+		} else {
+			next[i] = next[i] - i
 		}
 	}
-	return ans
+	return next
 }
 
 func main() {
