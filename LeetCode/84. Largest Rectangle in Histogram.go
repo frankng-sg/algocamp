@@ -2,7 +2,21 @@ package main
 
 import "fmt"
 
-func higherInt(a, b int) int {
+type Stack []int
+
+func (s *Stack) Top() int {
+	return (*s)[len(*s)-1]
+}
+
+func (s *Stack) Pop() {
+	*s = (*s)[:len(*s)-1]
+}
+
+func (s *Stack) Push(v int) {
+	*s = append(*s, v)
+}
+
+func max(a, b int) int {
 	if a > b {
 		return a
 	}
@@ -11,23 +25,21 @@ func higherInt(a, b int) int {
 
 func largestRectangleArea(heights []int) int {
 	n := len(heights)
-	h := make([]int, n) // height
-	p := make([]int, n) // pos
+	var h, p Stack
 	maxArea := 0
 	for i := 0; i < n; i++ {
 		start := i
-		l := len(h)
-		for l > 0 && h[l-1] > heights[i] {
-			maxArea = higherInt(maxArea, h[l-1]*(i-p[l-1]))
-			start = p[l-1]
-			l--
-			h, p = h[:l], p[:l]
+		for len(h) > 0 && h.Top() > heights[i] {
+			maxArea = max(maxArea, h.Top()*(i-p.Top()))
+			start = p.Top()
+			h.Pop()
+			p.Pop()
 		}
-		h = append(h, heights[i])
-		p = append(p, start)
+		h.Push(heights[i])
+		p.Push(start)
 	}
 	for i := 0; i < len(h); i++ {
-		maxArea = higherInt(maxArea, h[i]*(n-p[i]))
+		maxArea = max(maxArea, h[i]*(n-p[i]))
 	}
 	return maxArea
 }
