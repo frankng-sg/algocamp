@@ -35,8 +35,10 @@ func largestRectangleArea(heights []int) int {
 			h.Pop()
 			p.Pop()
 		}
-		h.Push(heights[i])
-		p.Push(start)
+		if len(h) == 0 || heights[i] > h.Top() {
+			h.Push(heights[i])
+			p.Push(start)
+		}
 	}
 	for i := 0; i < len(h); i++ {
 		maxArea = max(maxArea, h[i]*(n-p[i]))
