@@ -22,6 +22,12 @@ func largestRectangleArea(heights []int) int {
 				maxArea = area
 			}
 		}
+		for j := len(maxh) - 2; j >= 0; j-- {
+			if maxh[j] >= maxh[j+1] {
+				maxh = maxh[:j+1]
+				pos = pos[:j+1]
+			}
+		}
 		if !found {
 			maxh = append(maxh, heights[i])
 			pos = append(pos, i)
