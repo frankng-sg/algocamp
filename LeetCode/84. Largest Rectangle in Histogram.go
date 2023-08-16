@@ -10,29 +10,24 @@ func higherInt(a, b int) int {
 }
 
 func largestRectangleArea(heights []int) int {
-	maxh := []int{}
-	pos := []int{}
 	n := len(heights)
+	h := make([]int, n) // height
+	p := make([]int, n) // pos
 	maxArea := 0
 	for i := 0; i < n; i++ {
-		for j := len(maxh) - 1; j >= 0; j-- {
-			if heights[i] < maxh[j] {
-				maxh[j] = heights[i]
-			}
+		start := i
+		l := len(h)
+		for l > 0 && h[l-1] > heights[i] {
+			maxArea = higherInt(maxArea, h[l-1]*(i-p[l-1]))
+			start = p[l-1]
+			l--
+			h, p = h[:l], p[:l]
 		}
-		for j := len(maxh) - 2; j >= 0; j-- {
-			if maxh[j] >= maxh[j+1] {
-				maxh = maxh[:j+1]
-				pos = pos[:j+1]
-			}
-		}
-		if len(maxh) == 0 || heights[i] > maxh[len(maxh)-1] {
-			maxh = append(maxh, heights[i])
-			pos = append(pos, i)
-		}
-		for j := len(maxh) - 1; j >= 0; j-- {
-			maxArea = higherInt(maxArea, maxh[j]*(i-pos[j]+1))
-		}
+		h = append(h, heights[i])
+		p = append(p, start)
+	}
+	for i := 0; i < len(h); i++ {
+		maxArea = higherInt(maxArea, h[i]*(n-p[i]))
 	}
 	return maxArea
 }
