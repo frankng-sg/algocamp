@@ -6,33 +6,30 @@ import (
 )
 
 func evalRPN(tokens []string) int {
-	num := []int{}
-	i := 0
-	for _, v := range tokens {
-		switch v {
+	nums := []int{}
+	calc := func(op string) {
+		n := len(nums)
+		switch op {
 		case "+":
-			i--
-			num[i-1] += num[i]
+			nums[n-2] += nums[n-1]
 		case "-":
-			i--
-			num[i-1] -= num[i]
+			nums[n-2] -= nums[n-1]
 		case "*":
-			i--
-			num[i-1] *= num[i]
+			nums[n-2] *= nums[n-1]
 		case "/":
-			i--
-			num[i-1] /= num[i]
-		default:
+			nums[n-2] /= nums[n-1]
+		}
+		nums = nums[:n-1]
+	}
+	for _, v := range tokens {
+		if v == "+" || v == "-" || v == "*" || v == "/" {
+			calc(v)
+		} else {
 			k, _ := strconv.Atoi(v)
-			if i == len(num) {
-				num = append(num, k)
-			} else {
-				num[i] = k
-			}
-			i++
+			nums = append(nums, k)
 		}
 	}
-	return num[0]
+	return nums[0]
 }
 
 func main() {
