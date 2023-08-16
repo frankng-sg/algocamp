@@ -26,6 +26,26 @@ func carFleet(target int, position []int, speed []int) int {
 	return fleets
 }
 
+func carFleet2(target int, position []int, speed []int) int {
+	n := len(position)
+	loc := make([]int, n)
+	for i := 0; i < n; i++ {
+		loc[i] = i
+	}
+	sort.Slice(loc, func(i, j int) bool {
+		return position[loc[i]] > position[loc[j]]
+	})
+	stack := []float64{}
+	for i := 0; i < n; i++ {
+		stack = append(stack, float64(target-position[loc[i]])/float64(speed[loc[i]]))
+		lstack := len(stack)
+		if lstack >= 2 && stack[lstack-1] <= stack[lstack-2] {
+			stack = stack[:lstack-1]
+		}
+	}
+	return len(stack)
+}
+
 func main() {
 	fmt.Println(carFleet(17, []int{8, 12, 16, 11, 7}, []int{6, 9, 10, 9, 7})) // Output: 4
 	fmt.Println(carFleet(12, []int{0, 8, 0, 5, 3}, []int{2, 4, 1, 1, 3}))     // Output: 3
