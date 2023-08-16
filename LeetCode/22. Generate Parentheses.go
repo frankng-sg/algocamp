@@ -3,30 +3,19 @@ package main
 import "fmt"
 
 func generateParenthesis(n int) []string {
-	openP := 0
-	closeP := 0
-	lim := n << 1
-	comb := make([]byte, lim)
 	result := []string{}
-	var try func(int)
-	try = func(k int) {
-		if k == lim {
+	var try func(int, int, []byte)
+	try = func(openP, closeP int, comb []byte) {
+		if closeP > openP || openP > n || closeP > n {
+			return
+		}
+		if openP == n && closeP == n {
 			result = append(result, string(comb))
 		}
-		if openP < n {
-			comb[k] = '('
-			openP++
-			try(k + 1)
-			openP--
-		}
-		if closeP < openP && closeP < n {
-			comb[k] = ')'
-			closeP++
-			try(k + 1)
-			closeP--
-		}
+		try(openP+1, closeP, append(comb, '('))
+		try(openP, closeP+1, append(comb, ')'))
 	}
-	try(0)
+	try(1, 0, []byte{'('})
 	return result
 }
 
