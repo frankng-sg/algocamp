@@ -5,12 +5,9 @@ import "fmt"
 func change(amount int, coins []int) int {
 	count := make([]int, amount+1)
 	count[0] = 1
-	for i := 0; i < len(coins); i++ {
-		for j := 1; j <= amount; j++ {
-			if j-coins[i] >= 0 {
-				count[j] += count[j-coins[i]]
-			}
-
+	for _, coin := range coins {
+		for i := coin; i <= amount; i++ {
+			count[i] += count[i-coin]
 		}
 	}
 	return count[amount]
