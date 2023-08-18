@@ -3,29 +3,17 @@ package main
 import "fmt"
 
 func change(amount int, coins []int) int {
-	if amount == 0 {
-		return 1
-	}
-	var sum [300][5001]int
-	n := len(coins)
-	for i := 0; i < n; i++ {
+	count := make([]int, amount+1)
+	count[0] = 1
+	for i := 0; i < len(coins); i++ {
 		for j := 1; j <= amount; j++ {
-			if j%coins[i] == 0 {
-				sum[i][j] = 1
+			if j-coins[i] >= 0 {
+				count[j] += count[j-coins[i]]
 			}
+
 		}
 	}
-	for i := 1; i < n; i++ {
-		for j := 1; j <= amount; j++ {
-			sum[i][j] += sum[i-1][j]
-			k := j
-			for k-coins[i] > 0 {
-				k -= coins[i]
-				sum[i][j] += sum[i-1][k]
-			}
-		}
-	}
-	return sum[n-1][amount]
+	return count[amount]
 }
 
 func main() {
