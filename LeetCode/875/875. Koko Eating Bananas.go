@@ -1,13 +1,5 @@
 package main
 
-func arrsum(nums []int) int {
-	sum := 0
-	for _, v := range nums {
-		sum += v
-	}
-	return sum
-}
-
 func arrmax(nums []int) int {
 	max := nums[0]
 	for _, v := range nums {
@@ -26,15 +18,8 @@ func eatingTimeInHours(piles []int, speed int) int {
 	return sum
 }
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
 func minEatingSpeed(piles []int, h int) int {
-	l, r := max(arrsum(piles)/h, 1), arrmax(piles)
+	l, r := 1, arrmax(piles)
 	for l < r {
 		mid := l + (r-l)>>1
 		if eatingTimeInHours(piles, mid) <= h {
