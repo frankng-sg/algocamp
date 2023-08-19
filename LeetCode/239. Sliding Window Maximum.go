@@ -2,48 +2,20 @@ package main
 
 import "fmt"
 
-type Queue []int
-
-func (this *Queue) Enqueue(v int) {
-	*this = append(*this, v)
-}
-
-func (this *Queue) Dequeue() int {
-	v := (*this)[0]
-	*this = (*this)[1:]
-	return v
-}
-
-func (this *Queue) Pop() {
-	*this = (*this)[:len(*this)-1]
-}
-
-func (this *Queue) Top() int {
-	return (*this)[len(*this)-1]
-}
-
-func (this *Queue) Front() int {
-	return (*this)[0]
-}
-
-func (this *Queue) Empty() bool {
-	return len(*this) == 0
-}
-
 func maxSlidingWindow(nums []int, k int) []int {
 	output := []int{}
-	q := Queue{}
+	q, qlen := []int{}, 0
 	l, r, n := 0, 0, len(nums)
 	for r < n {
-		for !q.Empty() && nums[q.Top()] < nums[r] {
-			q.Pop()
+		for qlen > 0 && nums[q[qlen-1]] < nums[r] {
+			q, qlen = q[:qlen-1], qlen-1
 		}
-		q.Enqueue(r)
-		if l > q.Front() {
-			q.Dequeue()
+		q, qlen = append(q, r), qlen+1
+		if l > q[0] {
+			q, qlen = q[1:], qlen-1
 		}
 		if r+1 >= k {
-			output = append(output, nums[q.Front()])
+			output = append(output, nums[q[0]])
 			l++
 		}
 		r++
