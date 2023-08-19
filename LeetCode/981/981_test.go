@@ -82,9 +82,6 @@ func TestTimeMap_3(t *testing.T) {
 		switch test.ops {
 		case "TimeMap":
 			timeMap = Constructor()
-			if timeMap.cache == nil {
-				timeMap.cache = make(map[string][]TimeBasedValue)
-			}
 		case "set":
 			timeMap.Set(test.args[0].(string), test.args[1].(string), test.args[2].(int))
 		case "get":
@@ -117,9 +114,6 @@ func TestTimeMap_4(t *testing.T) {
 		switch test.ops {
 		case "TimeMap":
 			timeMap = Constructor()
-			if timeMap.cache == nil {
-				timeMap.cache = make(map[string][]TimeBasedValue)
-			}
 		case "set":
 			timeMap.Set(test.args[0].(string), test.args[1].(string), test.args[2].(int))
 		case "get":

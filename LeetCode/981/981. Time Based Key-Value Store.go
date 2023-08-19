@@ -7,48 +7,48 @@ package main
  * param_2 := obj.Get(key,timestamp);
  */
 
-type TimeBasedValue struct {
-	Value     string
-	Timestamp int
-}
-
 type TimeMap struct {
-	cache map[string][]TimeBasedValue // cache[key] = [[value, timestamp], ...]
+	values    map[string][]string
+	timestamp map[string][]int
 }
 
 func Constructor() TimeMap {
-	return TimeMap{cache: make(map[string][]TimeBasedValue)}
+	return TimeMap{
+		values:    make(map[string][]string),
+		timestamp: make(map[string][]int),
+	}
 }
 
 func (this *TimeMap) Set(key string, value string, timestamp int) {
-	this.cache[key] = append(this.cache[key], TimeBasedValue{value, timestamp})
+	this.values[key] = append(this.values[key], value)
+	this.timestamp[key] = append(this.timestamp[key], timestamp)
 }
 
 func (this *TimeMap) Get(key string, timestamp int) string {
-	i := bsearch(this.cache[key], timestamp)
+	i := bsearch(this.timestamp[key], timestamp)
 	if i == -1 {
 		return ""
 	}
-	return this.cache[key][i].Value
+	return this.values[key][i]
 }
 
-func bsearch(data []TimeBasedValue, target int) int {
+func bsearch(data []int, target int) int {
 	l, r := 0, len(data)-1
 	if r < 0 {
 		return -1
 	}
 	for l < r-1 {
 		mid := (l + r) >> 1
-		if data[mid].Timestamp >= target {
+		if data[mid] >= target {
 			r = mid
 		} else {
 			l = mid
 		}
 	}
-	if data[r].Timestamp <= target {
+	if data[r] <= target {
 		return r
 	}
-	if data[l].Timestamp <= target {
+	if data[l] <= target {
 		return l
 	}
 	return -1
