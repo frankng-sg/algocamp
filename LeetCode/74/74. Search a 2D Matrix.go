@@ -2,43 +2,25 @@ package main
 
 import "fmt"
 
-func bsearch(n, target int, getVal func(int) int) int {
-	l, r := 0, n
-	for l < r-1 {
+func searchMatrix(matrix [][]int, target int) bool {
+	nrow, ncol := len(matrix), len(matrix[0])
+	l, r := 0, nrow*ncol-1
+	for l <= r {
 		mid := l + (r-l)>>1
-		if getVal(mid) <= target {
-			l = mid
+		row, col := mid/ncol, mid%ncol
+		if matrix[row][col] == target {
+			return true
+		} else if matrix[row][col] < target {
+			l = mid + 1
 		} else {
 			r = mid - 1
 		}
 	}
-	if target >= getVal(r) {
-		return r
-	}
-	return l
-}
-
-func searchMatrix(matrix [][]int, target int) bool {
-	nrow := len(matrix)
-	ncol := len(matrix[0])
-
-	getFirstValueInRow := func(i int) int {
-		return matrix[i][0]
-	}
-
-	// find which row the target should be in
-	row := bsearch(nrow-1, target, getFirstValueInRow)
-	getValueInRow := func(i int) int {
-		return matrix[row][i]
-	}
-	col := bsearch(ncol-1, target, getValueInRow)
-	if col == ncol-1 {
-		return matrix[row][col] == target
-	}
-	return matrix[row][col] == target || matrix[row][col+1] == target
+	return false
 }
 
 func main() {
+	fmt.Println(searchMatrix([][]int{{1}}, 23)) // Output: false
 	fmt.Println(searchMatrix([][]int{
 		{1, 11, 16, 20},
 		{21, 23, 24, 25},
