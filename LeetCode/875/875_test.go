@@ -10,6 +10,7 @@ func TestMinEatingSpeed(t *testing.T) {
 		h     int
 		want  int
 	}{
+		{[]int{312884470}, 968709470, 1},
 		{[]int{3, 6, 7, 11}, 8, 4},
 		{[]int{1, 1, 1, 6, 7, 11}, 7, 7},
 		{[]int{1, 1, 1, 6, 7, 11}, 6, 11},

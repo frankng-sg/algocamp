@@ -18,7 +18,7 @@ func arrmax(nums []int) int {
 	return max
 }
 
-func eatingTime(piles []int, speed int) int {
+func eatingTimeInHours(piles []int, speed int) int {
 	sum := 0
 	for _, v := range piles {
 		sum += (v-1)/speed + 1
@@ -26,18 +26,18 @@ func eatingTime(piles []int, speed int) int {
 	return sum
 }
 
-func minEatingSpeed(piles []int, h int) int {
-	var maxspeed, minspeed int
-	if sum := arrsum(piles); sum%h == 0 {
-		minspeed = sum / h
-	} else {
-		minspeed = sum/h + 1
+func max(a, b int) int {
+	if a > b {
+		return a
 	}
-	maxspeed = arrmax(piles)
-	l, r := minspeed, maxspeed
+	return b
+}
+
+func minEatingSpeed(piles []int, h int) int {
+	l, r := max(arrsum(piles)/h, 1), arrmax(piles)
 	for l < r {
 		mid := l + (r-l)>>1
-		if eatingTime(piles, mid) <= h {
+		if eatingTimeInHours(piles, mid) <= h {
 			r = mid
 		} else {
 			l = mid + 1
