@@ -11,10 +11,12 @@ func TestFindMedianSortedArrays(t *testing.T) {
 		nums2 []int
 		want  float64
 	}{
+		{[]int{}, []int{1}, 1.},
+		{[]int{1, 2, 3}, []int{4, 5, 6}, 3.5},
+		{[]int{1, 2, 7}, []int{3, 4, 6}, 3.5},
 		{[]int{1, 3}, []int{2}, 2.},
 		{[]int{1, 2}, []int{3, 4}, 2.5},
 		{[]int{0, 0}, []int{0, 0}, 0.},
-		{[]int{}, []int{1}, 1.},
 		{[]int{2}, []int{}, 2.},
 		{[]int{1, 3, 5}, []int{2, 4, 6}, 3.5},
 		{[]int{1, 2, 6}, []int{7, 8, 9}, 6.5},
