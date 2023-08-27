@@ -7,9 +7,6 @@ import (
 
 // Time: O(m + n) Space: O(1)
 func intersect(nums1 []int, nums2 []int) []int {
-	if len(nums1) > len(nums2) {
-		nums1, nums2 = nums2, nums1
-	}
 	var count [1001]int
 	for _, num := range nums1 {
 		count[num]++
@@ -26,9 +23,6 @@ func intersect(nums1 []int, nums2 []int) []int {
 
 // Time: O(Max(nlogn, m + n)) Space: O(1)
 func intersect2(nums1 []int, nums2 []int) []int {
-	if len(nums1) > len(nums2) {
-		nums1, nums2 = nums2, nums1
-	}
 	sort.Ints(nums1)
 	sort.Ints(nums2)
 	output := make([]int, 0, len(nums1))
