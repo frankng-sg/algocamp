@@ -2,19 +2,26 @@ package main
 
 import "fmt"
 
-// Time: O(n) Space: O(n)
-func rotate(nums []int, k int) {
-	tmp := make([]int, len(nums))
-	for i := 0; i < len(nums); i++ {
-		tmp[i] = nums[i]
-	}
-	for i := 0; i < len(nums); i++ {
-		nums[(i+k)%len(nums)] = tmp[i]
+func reverse(nums []int, i, j int) {
+	for i < j {
+		nums[i], nums[j] = nums[j], nums[i]
+		i++
+		j--
 	}
 }
 
+// Time: O(n) Space: O(1)
+func rotate(nums []int, k int) {
+	k = k % len(nums)
+	reverse(nums, 0, len(nums)-1)
+	reverse(nums, 0, k-1)
+	reverse(nums, k, len(nums)-1)
+}
+
 func main() {
-	nums := []int{1, 2, 3, 4, 5, 6, 7}
-	rotate(nums, 3)
-	fmt.Println(nums) // Output: [5 6 7 1 2 3 4]
+	var nums []int
+
+	nums = []int{1, 2, 3, 4, 5, 6, 7}
+	rotate(nums, 13)
+	fmt.Println(nums) // Output: [2 3 4 5 6 7 1]
 }
