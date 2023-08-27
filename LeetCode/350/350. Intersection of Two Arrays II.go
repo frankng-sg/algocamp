@@ -2,26 +2,20 @@ package main
 
 import "fmt"
 
-// Time: O(m + n) Space: O(m + n)
+// Time: O(m + n) Space: O(1)
 func intersect(nums1 []int, nums2 []int) []int {
-	var count1, count2 [1001]int
+	if len(nums1) > len(nums2) {
+		nums1, nums2 = nums2, nums1
+	}
+	var count [1001]int
 	for _, num := range nums1 {
-		count1[num]++
+		count[num]++
 	}
+	output := make([]int, 0, len(nums1))
 	for _, num := range nums2 {
-		count2[num]++
-	}
-	min := func(a, b int) int {
-		if a < b {
-			return a
-		}
-		return b
-	}
-	var output []int
-	for i := 0; i <= 1000; i++ {
-		k := min(count1[i], count2[i])
-		for j := 0; j < k; j++ {
-			output = append(output, i)
+		if count[num] > 0 {
+			count[num]--
+			output = append(output, num)
 		}
 	}
 	return output
