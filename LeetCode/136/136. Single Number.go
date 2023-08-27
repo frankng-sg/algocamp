@@ -2,22 +2,15 @@ package main
 
 import (
 	"fmt"
-	"sort"
 )
 
-// Time: O(nlogn) Space: O(1)
+// Time: O(n) Space: O(1)
 func singleNumber(nums []int) int {
-	sort.Ints(nums)
-	var i int
-	for i = 0; i < len(nums)-1; i += 2 {
-		if nums[i] != nums[i+1] {
-			return nums[i]
-		}
+	r := nums[0]
+	for i := 1; i < len(nums); i++ {
+		r ^= nums[i]
 	}
-	if i == len(nums)-1 {
-		return nums[i]
-	}
-	return 0
+	return r
 }
 
 func main() {
