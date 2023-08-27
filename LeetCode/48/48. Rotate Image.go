@@ -16,6 +16,19 @@ func rotate(matrix [][]int) {
 	}
 }
 
+func rotate2(matrix [][]int) [][]int {
+	n := len(matrix)
+	for i := 0; i < n/2; i++ {
+		matrix[i], matrix[n-i-1] = matrix[n-i-1], matrix[i]
+	}
+	for i := 0; i < n-1; i++ {
+		for j := i + 1; j < n; j++ {
+			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+		}
+	}
+	return matrix
+}
+
 func main() {
 	var m [][]int
 
@@ -24,7 +37,7 @@ func main() {
 		{4, 5, 6},
 		{7, 8, 9},
 	}
-	rotate(m)
+	rotate2(m)
 	fmt.Println(m) // Output: [[7,4,1],[8,5,2],[9,6,3]]
 
 	m = [][]int{
@@ -33,7 +46,7 @@ func main() {
 		{13, 3, 6, 7},
 		{15, 14, 12, 16},
 	}
-	rotate(m)
+	rotate2(m)
 	fmt.Println(m) // Output: [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
 
 }
