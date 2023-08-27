@@ -23,9 +23,6 @@ func merge2(nums1 []int, m int, nums2 []int, n int) {
 			i--
 		}
 	}
-	for ; i >= 0; i, k = i-1, k-1 {
-		nums1[k] = nums1[i]
-	}
 	for ; j >= 0; j, k = j-1, k-1 {
 		nums1[k] = nums2[j]
 	}
