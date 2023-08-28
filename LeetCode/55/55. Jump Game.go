@@ -6,13 +6,11 @@ import "fmt"
 func canJump(nums []int) bool {
 	visited := make([]bool, len(nums))
 	visited[0] = true
-	for i := 0; i < len(nums); i++ {
-		if visited[i] {
-			for j := 1; j <= nums[i]; j++ {
-				if i+j >= len(nums) {
-					break
-				}
-				visited[i+j] = true
+	for i := 1; i < len(nums); i++ {
+		for j := 1; j <= i; j++ {
+			if visited[i-j] && nums[i-j] >= j {
+				visited[i] = true
+				break
 			}
 		}
 	}
