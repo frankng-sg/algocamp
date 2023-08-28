@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 // Time: O(n^2) Space: O(n)
-func canJump(nums []int) bool {
+func canJump0(nums []int) bool {
 	visited := make([]bool, len(nums))
 	visited[0] = true
 	for i := 1; i < len(nums); i++ {
@@ -15,6 +15,17 @@ func canJump(nums []int) bool {
 		}
 	}
 	return visited[len(nums)-1]
+}
+
+// Time: O(n) Space: O(1)
+func canJump(nums []int) bool {
+	target := len(nums) - 1
+	for i := len(nums) - 2; i >= 0; i-- {
+		if nums[i] >= target-i {
+			target = i
+		}
+	}
+	return target == 0
 }
 
 func main() {
