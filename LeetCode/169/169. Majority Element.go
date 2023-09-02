@@ -5,8 +5,26 @@ import (
 	"sort"
 )
 
-// Time: O(n), Space: O(n)
+// Boyer-Moore Majority Voting Algorithm
+// Time: O(n), Space: O(1)
 func majorityElement(nums []int) int {
+	vote, candidate := 1, nums[0]
+	for _, v := range nums {
+		if v == candidate {
+			vote++
+		} else {
+			vote--
+		}
+		if vote == 0 {
+			candidate = v
+			vote = 1
+		}
+	}
+	return candidate
+}
+
+// Time: O(n), Space: O(n)
+func majorityElement2(nums []int) int {
 	count := make(map[int]int)
 	for _, v := range nums {
 		count[v]++
