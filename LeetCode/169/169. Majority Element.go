@@ -8,15 +8,15 @@ import (
 // Time: O(n), Space: O(n)
 func majorityElement(nums []int) int {
 	count := make(map[int]int)
-	maxCount, maxVal := 1, nums[0]
 	for _, v := range nums {
 		count[v]++
-		if count[v] > maxCount {
-			maxCount = count[v]
-			maxVal = v
+	}
+	for _, v := range nums {
+		if count[v] > len(nums)>>1 {
+			return v
 		}
 	}
-	return maxVal
+	return nums[0]
 }
 
 // Time: O(nlogn), Space: O(1)
@@ -41,6 +41,7 @@ func majorityElement1(nums []int) int {
 }
 
 func main() {
+	fmt.Println(majorityElement([]int{2, 2, 1, 1, 1, 2, 2}))       // Output: 2
 	fmt.Println(majorityElement([]int{3, 2, 3}))                   // Output: 3
 	fmt.Println(majorityElement([]int{1, 0, 3, 2, 2, 2, 2}))       // Output: 2
 	fmt.Println(majorityElement([]int{1}))                         // Output: 1
