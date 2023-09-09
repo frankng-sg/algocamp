@@ -2,8 +2,44 @@ package main
 
 import "fmt"
 
-// Time: O(n^2), Space: O(1)
+// Time: O(n^2), Space: O(n^2)
 func longestPalindrome(s string) string {
+	var n int
+	if n = len(s); n <= 0 {
+		return ""
+	}
+	dp := make([][]bool, n)
+	for i := range dp {
+		dp[i] = make([]bool, n)
+	}
+
+	// All substrings of length 1 are palindromes.
+	start, maxlen := 0, 1
+	for i := 0; i < n; i++ {
+		dp[i][i] = true
+	}
+
+	// Validate substrings of length 2.
+	for i := 1; i < n; i++ {
+		if s[i] == s[i-1] {
+			dp[i-1][i] = true
+			start, maxlen = i-1, 2
+		}
+	}
+
+	for sublen := 3; sublen <= n; sublen++ {
+		for i := sublen - 1; i < n; i++ {
+			if s[i] == s[i+1-sublen] && dp[i+2-sublen][i-1] {
+				dp[i+1-sublen][i] = true
+				start, maxlen = i+1-sublen, sublen
+			}
+		}
+	}
+	return s[start : start+maxlen]
+}
+
+// Time: O(n^2), Space: O(1)
+func longestPalindrome2(s string) string {
 	if s == "" {
 		return ""
 	}
@@ -56,9 +92,9 @@ func longestPalindrome1(s string) string {
 }
 
 func main() {
-	fmt.Println(longestPalindrome("cbbd"))                                     // Output: "bb"
-	fmt.Println(longestPalindrome("abccbaccbaabccbaabaccaccabaccccbaabaccba")) // Output: "baabccbaab"
-	fmt.Println(longestPalindrome(""))                                         // Output: ""
 	fmt.Println(longestPalindrome("abcba"))                                    // Output: "abcba"
+	fmt.Println(longestPalindrome("cbbd"))                                     // Output: "bb"
+	fmt.Println(longestPalindrome("abccbaccbaabccbaabaccaccabaccccbaabaccba")) // Output: "abaccaccaba"
+	fmt.Println(longestPalindrome(""))                                         // Output: ""
 	fmt.Println(longestPalindrome("abccbaabaccba"))                            // Output: "abccba"
 }
