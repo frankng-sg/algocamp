@@ -34,11 +34,42 @@ func findKthLargest1(nums []int, k int) int {
 
 // Algorithm: Quick Sort
 // Time: O(nlogn), Space: O(1)
-func findKthLargest(nums []int, k int) int {
+func findKthLargest2(nums []int, k int) int {
 	sort.Slice(nums, func(i, j int) bool {
 		return nums[i] > nums[j]
 	})
 	return nums[k-1]
+}
+
+func heapify(nums []int, root, endnode int) {
+	key := nums[root]
+	for root<<1+1 <= endnode {
+		child := root<<1 + 1
+		if child < endnode && nums[child] < nums[child+1] {
+			child++
+		}
+		if nums[child] <= key {
+			break
+		}
+		nums[root] = nums[child]
+		root = child
+	}
+	nums[root] = key
+}
+
+// Algorithm: Heap
+// Time: O(klogn), Space: O(1)
+func findKthLargest(nums []int, k int) int {
+	n := len(nums) - 1
+	for i := n >> 1; i >= 0; i-- {
+		heapify(nums, i, n)
+	}
+	for ; k > 0; k-- {
+		nums[0], nums[n] = nums[n], nums[0]
+		n--
+		heapify(nums, 0, n)
+	}
+	return nums[n+1]
 }
 
 func main() {
@@ -46,5 +77,6 @@ func main() {
 	fmt.Println(findKthLargest([]int{99, 99}, 1))                    // Output: 99
 	fmt.Println(findKthLargest([]int{3, 2, 3, 1, 2, 4, 5, 5, 6}, 4)) // Output: 4
 	fmt.Println(findKthLargest([]int{1}, 1))                         // Output: 1
+	fmt.Println(findKthLargest([]int{3, 2, 1, 5, 6, 4}, 2))          // Output: 5
 	fmt.Println(findKthLargest([]int{3, 2, 1, 5, 6, 4}, 2))          // Output: 5
 }
