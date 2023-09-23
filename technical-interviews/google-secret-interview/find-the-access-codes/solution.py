@@ -1,27 +1,17 @@
-def bruteforce(nums):
-    exist = dict()
+def solution(l):
     count = 0
-    n = len(nums)
-    for i in range(0, n - 2):
-        for j in range(i + 1, n - 1):
-            if nums[j] < nums[i] or nums[j] % nums[i] != 0:
-                continue
-            key2 = str(nums[i]) + " " + str(nums[j])
-            if key2 in exist:
-                continue
-            exist[key2] = True
-            for k in range(j + 1, n):
-                if nums[k] < nums[j] or nums[k] % nums[j] != 0:
-                    continue
-                key3 = key2 + " " + str(nums[k])
-                if key3 not in exist:
-                    count += 1
-                    exist[key3] = True
+    size = len(l)
+    if size < 3:
+        return 0
+
+    cache = [0] * size
+    for x in range(size):
+        for y in range(x + 1, size):
+            if l[y] % l[x] == 0:
+                cache[y] += 1
+                count += cache[x]
+
     return count
-
-
-def solution(nums):
-    return bruteforce(nums)
 
 
 def stress_test():
@@ -40,10 +30,64 @@ def stress_test():
     print("Stress Test Performance: ", time.time() - start, " seconds")
 
 
+_SEED = 1.23
+
+
+def benchmark(sample_count):
+    from random import seed, randint
+    import timeit
+
+    clock = timeit.default_timer
+
+    seed(_SEED)
+    samples = [
+        [randint(1, 999999) for _ in range(randint(2, 2000))]
+        for _ in range(sample_count)
+    ]
+
+    start = clock()
+    for sample in samples:
+        solution(sample)
+
+    end = clock()
+    print("%.4f s elapsed for %d samples." % (end - start, sample_count))
+
+
+def test():
+    # Provided test cases.
+    assert solution([1, 1, 1]) == 1
+    assert solution([1, 2, 3, 4, 5, 6]) == 3
+
+    # Custom test cases.
+    assert solution([1]) == 0
+    assert solution([1, 2]) == 0
+    assert solution([2, 4]) == 0
+    assert solution([1, 1, 1, 1]) == 4
+    assert solution([1, 1, 1, 1, 1]) == 10
+    assert solution([1, 1, 1, 1, 1, 1]) == 20
+    assert solution([1, 1, 1, 1, 1, 1, 1]) == 35
+    assert solution([1, 1, 2]) == 1
+    assert solution([1, 1, 2, 2]) == 4
+    assert solution([1, 1, 2, 2, 2]) == 10
+    assert solution([1, 1, 2, 2, 2, 3]) == 11
+    assert solution([1, 2, 4, 8, 16]) == 10
+    assert solution([2, 4, 5, 9, 12, 34, 45]) == 1
+    assert solution([2, 2, 2, 2, 4, 4, 5, 6, 8, 8, 8]) == 90
+    assert solution([2, 4, 8]) == 1
+    assert solution([2, 4, 8, 16]) == 4
+    assert solution([3, 4, 2, 7]) == 0
+    assert solution([6, 5, 4, 3, 2, 1]) == 0
+    assert solution([4, 7, 14]) == 0
+    assert solution([4, 21, 7, 14, 8, 56, 56, 42]) == 9
+    assert solution([4, 21, 7, 14, 56, 8, 56, 4, 42]) == 7
+    assert solution([4, 7, 14, 8, 21, 56, 42]) == 4
+    assert solution([4, 8, 4, 16]) == 2
+
+
+def main():
+    test()
+    benchmark(100)
+
+
 if __name__ == "__main__":
-    print(solution([1, 2, 4, 8]))  # Output: 4
-    print(solution([1, 2, 4, 1, 2, 4]))  # Output: 7
-    print(solution([1, 2, 2, 2]))  # Output: 2
-    print(solution([2, 2, 1, 2]))  # Output: 1
-    print(solution([3, 4, 5]))  # Output: 0
-    stress_test()
+    main()
