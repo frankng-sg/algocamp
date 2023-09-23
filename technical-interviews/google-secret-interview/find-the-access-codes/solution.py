@@ -6,17 +6,17 @@ def bruteforce(nums):
         for j in range(i + 1, n - 1):
             if nums[j] < nums[i] or nums[j] % nums[i] != 0:
                 continue
-            key = " ".join(map(str, [nums[i], nums[j]]))
-            if key in exist:
+            key2 = str(nums[i]) + " " + str(nums[j])
+            if key2 in exist:
                 continue
-            exist[key] = True
+            exist[key2] = True
             for k in range(j + 1, n):
                 if nums[k] < nums[j] or nums[k] % nums[j] != 0:
                     continue
-                key = " ".join(map(str, [nums[i], nums[j], nums[k]]))
-                if key not in exist:
+                key3 = key2 + " " + str(nums[k])
+                if key3 not in exist:
                     count += 1
-                    exist[key] = True
+                    exist[key3] = True
     return count
 
 
@@ -28,7 +28,7 @@ def stress_test():
     import random
     import time
 
-    num_numbers = 2000
+    num_numbers = 3000
     seed = [1]
     for i in range(1, 31):
         seed.append(seed[i - 1] * 2)
