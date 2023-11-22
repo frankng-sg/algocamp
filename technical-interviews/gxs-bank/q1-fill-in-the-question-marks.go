@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // PROBLEM
 // Given a string e.g "a?b?c?", replace "?" with an alphabet character a-z but the replacement cannot be the same with the
 // adjacent.
@@ -28,7 +30,7 @@ func fillQuestionMarks(s string) string {
 	return string(arr[1 : len(arr)-1])
 }
 
-//func main() {
-//	fmt.Println(fillQuestionMarks("a?b?c?"))
-//	fmt.Println(fillQuestionMarks("k???msl?"))
-//}
+func main() {
+	fmt.Println(fillQuestionMarks("a?b?c?"))
+	fmt.Println(fillQuestionMarks("k???msl?"))
+}

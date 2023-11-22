@@ -2,50 +2,64 @@ package main
 
 import "fmt"
 
-/**
- * Auto-generated code below aims at helping you parse
- * the standard input according to the problem statement.
- **/
+type Vector struct {
+	X, Y int
+}
+
+type Pod struct {
+	Pos       Vector
+	Speed     Vector
+	Angle     int
+	NextChkpt int
+	NextPos   Vector
+	NextPwr   int
+}
+
+func (p *Pod) Output() string {
+	return fmt.Sprintf("%d %d %d", p.NextPos.X, p.NextPos.Y, 200)
+}
+
+type GameMaster struct {
+	NLaps   int
+	NChkpts int
+	Chkpts  []Vector
+	You     []Pod
+	Enemy   []Pod
+}
+
+func (g *GameMaster) Init() {
+	fmt.Scan(&g.NLaps)
+	fmt.Scan(&g.NChkpts)
+	g.Chkpts = make([]Vector, g.NChkpts)
+	for i := 0; i < g.NChkpts; i++ {
+		fmt.Scan(&g.Chkpts[i].X, &g.Chkpts[i].Y)
+	}
+	g.You = make([]Pod, 2)
+	g.Enemy = make([]Pod, 2)
+}
+
+func (g *GameMaster) Read(p *Pod) {
+	fmt.Scan(&p.Pos.X, &p.Pos.Y, &p.Speed.X, &p.Speed.Y, &p.Angle, &p.NextChkpt)
+	p.NextPos = g.Chkpts[p.NextChkpt]
+}
+
+func (g *GameMaster) Write(out string) {
+	fmt.Println(out)
+}
+
+var g GameMaster
 
 func main() {
-	var laps int
-	fmt.Scan(&laps)
-
-	var checkpointCount int
-	fmt.Scan(&checkpointCount)
-
-	for i := 0; i < checkpointCount; i++ {
-		var checkpointX, checkpointY int
-		fmt.Scan(&checkpointX, &checkpointY)
-	}
+	g.Init()
 	for {
 		for i := 0; i < 2; i++ {
-			// x: x position of your pod
-			// y: y position of your pod
-			// vx: x speed of your pod
-			// vy: y speed of your pod
-			// angle: angle of your pod
-			// nextCheckPointId: next check point id of your pod
-			var x, y, vx, vy, angle, nextCheckPointId int
-			fmt.Scan(&x, &y, &vx, &vy, &angle, &nextCheckPointId)
+			g.Read(&g.You[i])
 		}
 		for i := 0; i < 2; i++ {
-			// x2: x position of the opponent's pod
-			// y2: y position of the opponent's pod
-			// vx2: x speed of the opponent's pod
-			// vy2: y speed of the opponent's pod
-			// angle2: angle of the opponent's pod
-			// nextCheckPointId2: next check point id of the opponent's pod
-			var x2, y2, vx2, vy2, angle2, nextCheckPointId2 int
-			fmt.Scan(&x2, &y2, &vx2, &vy2, &angle2, &nextCheckPointId2)
+			g.Read(&g.Enemy[i])
 		}
-
-		// fmt.Fprintln(os.Stderr, "Debug messages...")
-
-		// You have to output the target position
-		// followed by the power (0 <= power <= 200)
-		// i.e.: "x y power"
-		fmt.Println("8000 4500 100")
-		fmt.Println("8000 4500 100")
+		for i := 0; i < 2; i++ {
+			g.Write(g.You[i].Output())
+		}
 	}
 }
