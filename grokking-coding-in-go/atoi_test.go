@@ -100,11 +100,11 @@ func TestAtoi(t *testing.T) {
 		Expect int
 	}
 	tests := []TestCase{
-		//{In: "25 you rock", Expect: 25},
-		//{In: "  -54.4  ", Expect: -54},
-		//{In: "87.5", Expect: 87},
-		//{In: "-00035", Expect: -35},
-		//{In: "-minus86", Expect: 0},
+		{In: "25 you rock", Expect: 25},
+		{In: "  -54.4  ", Expect: -54},
+		{In: "87.5", Expect: 87},
+		{In: "-00035", Expect: -35},
+		{In: "-minus86", Expect: 0},
 		{In: "-2147483648", Expect: -2147483648},
 		{In: "2147483648", Expect: 2147483647},
 	}
