@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func reverse(a []byte) []byte {
+func reverseBytes(a []byte) []byte {
 	i, j := 0, len(a)-1
 	for i < j {
 		a[i], a[j] = a[j], a[i]
@@ -39,7 +39,7 @@ func addBinary(str1 string, str2 string) string {
 	if carry > 0 {
 		result.WriteByte('1')
 	}
-	return string(reverse(result.Bytes()))
+	return string(reverseBytes(result.Bytes()))
 }
 
 func TestAddBinary(t *testing.T) {
